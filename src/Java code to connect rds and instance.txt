@@ -1,0 +1,141 @@
+Java installation code:-
+ sudo yum install java-17-amazon-corretto-devel -y
+
+MySQL installation code:-
+sudo dnf install mariadb105 -y
+
+jdbc driver:-
+wget https://github.com/awslabs/aws-mysql-jdbc/releases/download/1.1.15/aws-mysql-jdbc-1.1.15.jar
+
+vi file creation code:-
+vi UserDatabaseApp.java
+
+
+java code formate to connect RDS and Ec2 Instance:-
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Scanner;
+
+public class UserDatabaseApp {
+    // RDS MySQL details
+    private static final String JDBC_URL = "jdbc:mysql://database-111.ch8ccwuo4r1w.ap-southeast-2.rds.amazonaws.com:3306/storage";
+    private static final String USERNAME = "admin";
+    private static final String PASSWORD = "Dara1234";
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Connection conn = null;
+
+        try {
+            // Connect to RDS
+            conn = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            System.out.println("✅ Connected to Database!");
+
+            while (true) {
+                System.out.println("\n--- User Menu ---");
+                System.out.println("1. Add User");
+                System.out.println("2. View Users");
+                System.out.println("3. Exit");
+                System.out.print("Enter choice: ");
+                int choice = sc.nextInt();
+                sc.nextLine(); // clear buffer
+
+                if (choice == 1) {
+                    // Add User
+                    System.out.print("Enter Name: ");
+                    String name = sc.nextLine();
+                    System.out.print("Enter Address: ");
+                    String address = sc.nextLine();
+                    System.out.print("Enter Contact: ");
+                    String contact = sc.nextLine();
+
+                    String sql = "INSERT INTO users (name, address, contact) VALUES (?, ?, ?)";
+                    PreparedStatement pstmt = conn.prepareStatement(sql);
+                    pstmt.setString(1, name);
+                    pstmt.setString(2, address);
+                    pstmt.setString(3, contact);
+
+                    int rows = pstmt.executeUpdate();
+                    if (rows > 0) {
+                        System.out.println("✅ User added successfully!");
+                    }
+                    pstmt.close();
+                } 
+                else if (choice == 2) {
+                    // View Users
+                    String sql = "SELECT * FROM users";
+                    Statement stmt = conn.createStatement();
+                    ResultSet rs = stmt.executeQuery(sql);
+
+                    System.out.println("\nID | Name | Address | Contact");
+                    System.out.println("-------------------------------------------");
+                    while (rs.next()) {
+                        int id = rs.getInt("id");
+                        String name = rs.getString("name");
+                        String address = rs.getString("address");
+                        String contact = rs.getString("contact");
+
+                        System.out.println(id + " | " + name + " | " + address + " | " + contact);
+                    }
+                    rs.close();
+                    stmt.close();
+                } 
+                else if (choice == 3) {
+                    System.out.println("👋 Exiting program...");
+                    break;
+                } 
+                else {
+                    System.out.println("❌ Invalid choice. Try again.");
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try { if (conn != null) conn.close(); } catch (Exception e) {}
+            sc.close();
+        }
+    }
+}
+
+
+Compile java file:-
+javac -cp .:aws-mysql-jdbc-1.1.15.jar UserDatabaseApp.java
+
+
+Run java file:
+java -cp .:aws-mysql-jdbc-1.1.15.jar UserDatabaseApp
+
+Database Creation code:-
+create database storage;
+
+Database using code:-
+use storage;
+
+Table creation code:-
+
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    address VARCHAR(200),
+    contact VARCHAR(15)
+);
+
+
+Table Data:-
+
+INSERT INTO users (name, address, contact) VALUES
+('Alice Johnson', '123 Main St, Springfield', '555-1234'),
+('Bob Smith', '456 Oak Ave, Rivertown', '555-5678'),
+('Charlie Brown', '789 Pine Rd, Lakeview', '555-9012'),
+('Diana Prince', '101 Elm St, Metropolis', '555-3456'),
+('Evan Davis', '202 Maple Ave, Hilltown', '555-7890'),
+('Fiona Carter', '303 Birch Blvd, Roseville', '555-6543'),
+('George Lewis', '404 Cedar Ct, Brooksville', '555-8765'),
+('Hannah Adams', '505 Walnut Way, Seaside', '555-4321'),
+('Ian Thompson', '606 Spruce St, Greenfield', '555-2468'),
+('Julia Roberts', '707 Ash Ave, Fairview', '
