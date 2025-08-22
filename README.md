@@ -1,6 +1,6 @@
 # AWS-EC2-to-RDS-Integration-Project
 
-![alt text](http://url/to/img.png)
+![alt text](https://github.com/Sharan-Birajdar/AWS-EC2-to-RDS-Integration-Project/blob/main/doc/Images/architecture.png?raw=true)
 
 ## 📌 Project Objective
 
