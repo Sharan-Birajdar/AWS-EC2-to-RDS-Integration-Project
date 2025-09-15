@@ -63,3 +63,4 @@ MySQL installation code:-
 jdbc driver:-
       wget https://github.com/awslabs/aws-mysql-jdbc/releases/download/1.1.15/aws-mysql-jdbc-1.1.15.jar
 
+## 🔹 Step 6. Connect EC2 to RDS
