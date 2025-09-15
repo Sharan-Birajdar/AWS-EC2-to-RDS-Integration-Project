@@ -155,3 +155,25 @@ jdbc driver:-
     }
     }
 ## 🔹 Step 7. Compile and Run Java Code
+ **Compile java file**
+
+    javac -cp .:aws-mysql-jdbc-1.1.15.jar UserDatabaseApp.java
+
+ **Run java file**
+
+    java -cp .:aws-mysql-jdbc-1.1.15.jar UserDatabaseApp
+    }
+## 🔹 Step 7. Create Database & Table
+  -Use Below code to create database and table
+     
+    CREATE DATABASE demo_db;
+    USE demo_db;
+
+    CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100)
+    );
+
+## 🔹 Step 7.  Insert Data from EC2
+   -Here simply run java file and put your data to database.
