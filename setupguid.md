@@ -64,3 +64,94 @@ jdbc driver:-
       wget https://github.com/awslabs/aws-mysql-jdbc/releases/download/1.1.15/aws-mysql-jdbc-1.1.15.jar
 
 ## 🔹 Step 6. Connect EC2 to RDS
+  -**Use** below code to connect **EC2** to **RDS**
+
+      import java.sql.Connection;
+      import java.sql.DriverManager;
+      import java.sql.PreparedStatement;
+      import java.sql.ResultSet;
+      import java.sql.Statement;
+      import java.util.Scanner;
+
+    public class UserDatabaseApp {
+    // RDS MySQL details
+    private static final String JDBC_URL = "jdbc:mysql://database-111.ch8ccwuo4r1w.ap-southeast-2.rds.amazonaws.com:3306/storage";
+    private static final String USERNAME = "admin";
+    private static final String PASSWORD = "Dara1234";
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        Connection conn = null;
+
+        try {
+            // Connect to RDS
+            conn = DriverManager.getConnection(JDBC_URL, USERNAME, PASSWORD);
+            System.out.println("✅ Connected to Database!");
+
+            while (true) {
+                System.out.println("\n--- User Menu ---");
+                System.out.println("1. Add User");
+                System.out.println("2. View Users");
+                System.out.println("3. Exit");
+                System.out.print("Enter choice: ");
+                int choice = sc.nextInt();
+                sc.nextLine(); // clear buffer
+
+                if (choice == 1) {
+                    // Add User
+                    System.out.print("Enter Name: ");
+                    String name = sc.nextLine();
+                    System.out.print("Enter Address: ");
+                    String address = sc.nextLine();
+                    System.out.print("Enter Contact: ");
+                    String contact = sc.nextLine();
+
+                    String sql = "INSERT INTO users (name, address, contact) VALUES (?, ?, ?)";
+                    PreparedStatement pstmt = conn.prepareStatement(sql);
+                    pstmt.setString(1, name);
+                    pstmt.setString(2, address);
+                    pstmt.setString(3, contact);
+
+                    int rows = pstmt.executeUpdate();
+                    if (rows > 0) {
+                        System.out.println("✅ User added successfully!");
+                    }
+                    pstmt.close();
+                } 
+                else if (choice == 2) {
+                    // View Users
+                    String sql = "SELECT * FROM users";
+                    Statement stmt = conn.createStatement();
+                    ResultSet rs = stmt.executeQuery(sql);
+
+                    System.out.println("\nID | Name | Address | Contact");
+                    System.out.println("-------------------------------------------");
+                    while (rs.next()) {
+                        int id = rs.getInt("id");
+                        String name = rs.getString("name");
+                        String address = rs.getString("address");
+                        String contact = rs.getString("contact");
+
+                        System.out.println(id + " | " + name + " | " + address + " | " + contact);
+                    }
+                    rs.close();
+                    stmt.close();
+                } 
+                else if (choice == 3) {
+                    System.out.println("👋 Exiting program...");
+                    break;
+                } 
+                else {
+                    System.out.println("❌ Invalid choice. Try again.");
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try { if (conn != null) conn.close(); } catch (Exception e) {}
+            sc.close();
+        }
+    }
+    }
+## 🔹 Step 7. Compile and Run Java Code
