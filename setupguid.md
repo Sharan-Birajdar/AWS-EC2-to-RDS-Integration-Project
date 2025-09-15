@@ -54,5 +54,12 @@
 
 ## 🔹 Step 4: Install Java Software on EC2
 
-## Do Your Queries here....
+Java installation code:-
+      sudo yum install java-17-amazon-corretto-devel -y
+
+MySQL installation code:-
+      sudo dnf install mariadb105 -y
+
+jdbc driver:-
+      wget https://github.com/awslabs/aws-mysql-jdbc/releases/download/1.1.15/aws-mysql-jdbc-1.1.15.jar
 
