@@ -24,7 +24,7 @@ public class UserDatabaseApp {
     // RDS MySQL details
     private static final String JDBC_URL = "jdbc:mysql://database-111.ch8ccwuo4r1w.ap-southeast-2.rds.amazonaws.com:3306/storage";
     private static final String USERNAME = "admin";
-    private static final String PASSWORD = "Dara1234";
+    private static final String PASSWORD = "sharan1234";
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -139,3 +139,4 @@ INSERT INTO users (name, address, contact) VALUES
 ('Hannah Adams', '505 Walnut Way, Seaside', '555-4321'),
 ('Ian Thompson', '606 Spruce St, Greenfield', '555-2468'),
 ('Julia Roberts', '707 Ash Ave, Fairview', '
+
